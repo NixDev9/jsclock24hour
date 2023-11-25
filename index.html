@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visitor's Clock</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 20vh;
+        }
+
+        #clock {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #date, #time {
+            margin: 0 10px;
+            font-size: 1.5em;
+        }
+    </style>
+</head>
+<body>
+
+<div id="clock">
+    <div id="date"></div>
+    <div id="time"></div>
+</div>
+
+<script>
+    const timezoneAbbreviations = {
+        "America/New_York": "EST",
+        "America/Chicago": "CST",
+        "America/Denver": "MST",
+        "America/Los_Angeles": "PST",
+        "America/Phoenix": "MST",
+        "America/Anchorage": "AKST",
+        "America/Adak": "HST",
+        "Pacific/Honolulu": "HST",
+        "Pacific/Midway": "SST",
+        "Pacific/Apia": "SST",
+        "Pacific/Pago_Pago": "SST",
+        "Pacific/Niue": "NUT",
+        "Pacific/Fakaofo": "TKT",
+        "Pacific/Kiritimati": "LINT",
+        "Pacific/Auckland": "NZST",
+        "Pacific/Chatham": "CHAST",
+        "Pacific/Fiji": "FJT",
+        "Pacific/Tongatapu": "TOT",
+        "Pacific/Apia": "WST",
+        "Pacific/Guadalcanal": "SBT",
+        "Pacific/Pohnpei": "PONT",
+        "Pacific/Port_Moresby": "PGT",
+        "Asia/Tokyo": "JST",
+        "Asia/Shanghai": "CST",
+        "Asia/Hong_Kong": "HKT",
+        "Asia/Bangkok": "ICT",
+        "Asia/Dhaka": "BDT",
+        "Asia/Kolkata": "IST",
+        "Asia/Colombo": "SLST",
+        "Asia/Kathmandu": "NPT",
+        "Asia/Kabul": "AFT",
+        "Asia/Tehran": "IRST",
+        "Europe/Moscow": "MSK",
+        "Europe/Istanbul": "TRT",
+        "Europe/Berlin": "CET",
+        "Europe/London": "GMT",
+        "Atlantic/Reykjavik": "GMT",
+        "Atlantic/Azores": "AZOT",
+        "Africa/Casablanca": "WET",
+        "Africa/Monrovia": "GMT",
+        "America/Buenos_Aires": "ART",
+        "America/Sao_Paulo": "BRT",
+        "America/Lima": "PET",
+        "America/Bogota": "COT",
+        "America/New_York": "EST",
+        "America/Chicago": "CST",
+        "America/Denver": "MST",
+        "America/Los_Angeles": "PST",
+        "Pacific/Honolulu": "HST"
+    };
+
+    function getTimezoneAbbreviation() {
+        const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        return timezoneAbbreviations[timezone] || timezone;
+    }
+
+    function updateClock() {
+        const now = new Date();
+
+        const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+        const formattedDate = now.toLocaleDateString('en-US', options);
+
+        const hours = (now.getHours() % 12 || 12).toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const seconds = now.getSeconds().toString().padStart(2, '0');
+        const period = now.getHours() >= 12 ? 'PM' : 'AM';
+
+        const formattedTime = `${hours}:${minutes}:${seconds} ${period}`;
+
+        const timeZoneAbbreviation = getTimezoneAbbreviation();
+
+        document.getElementById('date').textContent = formattedDate;
+        document.getElementById('time').textContent = `${formattedTime} (${timeZoneAbbreviation})`;
+    }
+
+    // Update the clock every second
+    setInterval(updateClock, 1000);
+
+    // Initial update
+    updateClock();
+</script>
+
+</body>
+</html>
